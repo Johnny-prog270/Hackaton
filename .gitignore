@@ -1,1 +1,4 @@
 .venv/
+data_part2.csv
+confusion_matrix.png
+roc_curve.png
