@@ -21,23 +21,12 @@ from plotly.offline import init_notebook_mode, iplot
 
 
 #code pour trouver la plus petite résolution d'image dans le dataset
-"""
-dataimages = list(dataimagecats) + list(dataimagedogs)
 
-minx = 2000
-miny = 2000
-for img in dataimages:
-    if(img.shape[0]<minx):
-        minx=img.shape[0]
-    if(img.shape[1]<miny):
-        miny=img.shape[1]
-print(minx,miny)
-"""
-
-minx=16
-miny=16
+minx=32
+miny=32
 
 #code pour générer le fichier csv à partir des images
+"""
 DATA_PATH = "datasets/cats_and_dogs"
 LABEL_TO_IDX = {"cats": 0, "dogs": 1}
 
@@ -67,6 +56,7 @@ for img in dataimagedogs:
 
 df = pd.DataFrame(columns=pixels,data=img_resizedcats+img_resizeddogs)
 df.to_csv("data_part2.csv", index=False) 
+"""
 
 
 df = pd.read_csv("data_part2.csv")
@@ -91,7 +81,7 @@ print("Accuracy:", acc)
 
 
 
-""" pour générer l'image de la matrice de confusion
+
 cm = confusion_matrix(y_true=y_test, y_pred=y_pred)
 
 # Affichage
@@ -100,10 +90,9 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["cat", "dog"]
 disp.plot()
 plt.savefig("confusion_matrix.png", dpi=300, bbox_inches="tight")
 plt.close()
-"""
 
 
-"""
+
 # 1 Encoder les labels en binaire
 lb = LabelBinarizer()
 y_test_bin = lb.fit_transform(y_test)  # chat=0, dog=1
@@ -128,4 +117,33 @@ plt.legend(loc="lower right")
 plt.savefig("roc_curve.png", dpi=300, bbox_inches="tight")
 plt.close()  # fermer la figure pour libérer la mémoire
 
-"""
+
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# PCA sur 3 composantes principales
+pca = PCA(n_components=3)
+X_pca_3 = pca.fit_transform(X_scaled)
+
+print("Variance expliquée par les 3 composantes :", pca.explained_variance_ratio_)
+print("Variance cumulée :", np.sum(pca.explained_variance_ratio_))
+
+# Conversion en DataFrame pour Plotly
+df_pca3 = pd.DataFrame({
+    "PC1": X_pca_3[:,0],
+    "PC2": X_pca_3[:,1],
+    "PC3": X_pca_3[:,2],
+    "Label": y
+})
+
+# Visualisation interactive 3D
+fig = px.scatter_3d(
+    df_pca3,
+    x="PC1", y="PC2", z="PC3",
+    color=df_pca3["Label"].map({0: "Cat", 1: "Dog"}),
+    title="PCA en 3D - Cats vs Dogs",
+    opacity=0.7
+)
+
+fig.update_traces(marker=dict(size=3))
+fig.show()
