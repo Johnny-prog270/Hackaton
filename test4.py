@@ -81,90 +81,107 @@ pixel_cols = [col for col in df.columns if col != "cat/dog"]
 X = df[pixel_cols].values
 y = df["cat/dog"].values
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
-)
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X, y, test_size=0.2, random_state=42, stratify=y
+# )
 
 kmax=20
 
-acc=[]
-cm =[]
-FPR=[]
-TPR=[]
-TRESHOLDS=[]
-ROC_AUC=[]
-for i in range(1, kmax+1):
-    knn = KNeighborsClassifier(n_neighbors=i)
-    knn.fit(X_train, y_train)
+# acc=[]
+# acctemp=[]
+# cm =[]
+# FPR=[]
+# TPR=[]
+# TRESHOLDS=[]
+# ROC_AUC=[]
+# for i in range(1, kmax+1):
+#     for j in range(1,43):
+#         X_train, X_test, y_train, y_test = train_test_split(
+#         X, y, test_size=0.2, random_state=j, stratify=y
+#     )
+#         knn = KNeighborsClassifier(n_neighbors=i)
+#         knn.fit(X_train, y_train)
 
-    y_pred = knn.predict(X_test)
+#         y_pred = knn.predict(X_test)
 
-    # Accuracy
+#         # Accuracy
+        
+#         acctemp.append(accuracy_score(y_test, y_pred))
+#         # print("Accuracy:", acc)
+
+#     acc.append(np.mean(acctemp))
+#     # cm.append(confusion_matrix(y_true=y_test, y_pred=y_pred))
+
+#     # # Affichage
+#     # disp = ConfusionMatrixDisplay(confusion_matrix=cm[i-1], display_labels=["cat", "dog"])
+
+
+
+#     # #  pour générer l'image de la matrice de confusion
+#     # # disp.plot()
+#     # # plt.savefig("confusion_matrix.png", dpi=300, bbox_inches="tight")
+#     # # plt.close()
+#     # axes1[i].plot(disp.plot())
+#     # axes1[i].set_title("Confusion matrix %0.2f"% i )
+
+
+#     # 1 Encoder les labels en binaire
+# #     lb = LabelBinarizer()
+# #     y_test_bin = lb.fit_transform(y_test)  # chat=0, dog=1
+
+# #     # 2 Obtenir les probabilités de la classe positive
+# #     y_score = knn.predict_proba(X_test)[:,1]  # probabilité de "dog"
+
+# #     # 3 Calculer FPR, TPR et AUC
     
-    acc.append(accuracy_score(y_test, y_pred))
-    # print("Accuracy:", acc)
+# #     fpr, tpr, thresholds = roc_curve(y_test_bin, y_score)
+# #     FPR.append(fpr)
+# #     TPR.append(tpr)
+# #     TRESHOLDS.append(thresholds)
+# #     roc_auc = auc(fpr, tpr)
+# #     ROC_AUC.append(roc_auc)
 
+# #     # 4 Plot
     
-    cm.append(confusion_matrix(y_true=y_test, y_pred=y_pred))
-
-    # # Affichage
-    # disp = ConfusionMatrixDisplay(confusion_matrix=cm[i-1], display_labels=["cat", "dog"])
-
-
-
-    # #  pour générer l'image de la matrice de confusion
-    # # disp.plot()
-    # # plt.savefig("confusion_matrix.png", dpi=300, bbox_inches="tight")
-    # # plt.close()
-    # axes1[i].plot(disp.plot())
-    # axes1[i].set_title("Confusion matrix %0.2f"% i )
-
-
-    # 1 Encoder les labels en binaire
-    lb = LabelBinarizer()
-    y_test_bin = lb.fit_transform(y_test)  # chat=0, dog=1
-
-    # 2 Obtenir les probabilités de la classe positive
-    y_score = knn.predict_proba(X_test)[:,1]  # probabilité de "dog"
-
-    # 3 Calculer FPR, TPR et AUC
-    
-    fpr, tpr, thresholds = roc_curve(y_test_bin, y_score)
-    FPR.append(fpr)
-    TPR.append(tpr)
-    TRESHOLDS.append(thresholds)
-    roc_auc = auc(fpr, tpr)
-    ROC_AUC.append(roc_auc)
-
-    # 4 Plot
-    
-    plt.subplot(int(kmax/4),4,i)
-    plt.plot(fpr, tpr, color="darkorange", lw=2, label="ROC curve (AUC = %0.2f)" % roc_auc)
-    plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
-    plt.title("ROC Curve - k-NN Classifier k= %0.2f "% i )
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
+# #     plt.subplot(int(kmax/4),4,i)
+# #     plt.plot(fpr, tpr, color="darkorange", lw=2, label="ROC curve (AUC = %0.2f)" % roc_auc)
+# #     plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
+# #     plt.title("ROC Curve - k-NN Classifier k= %0.2f "% i )
+# #     plt.xlabel("False Positive Rate")
+# #     plt.ylabel("True Positive Rate")
     
 
-plt.show()
+# # plt.show()
 
-for i in range(kmax) :
-    # Affichage
-    plt.subplot(int(kmax/4),4,i+1)
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm[i], display_labels=["cat", "dog"])
-    #  pour générer l'image de la matrice de confusion
-    disp.plot(ax=plt.gca())
-    plt.title("Confusion Matrix with k=%0.2f"%(i+1))
+# # for i in range(kmax) :
+# #     # Affichage
+# #     plt.subplot(int(kmax/4),4,i+1)
+# #     disp = ConfusionMatrixDisplay(confusion_matrix=cm[i], display_labels=["cat", "dog"])
+# #     #  pour générer l'image de la matrice de confusion
+# #     disp.plot(ax=plt.gca())
+# #     plt.title("Confusion Matrix with k=%0.2f"%(i+1))
     
-plt.show()
-k=[]
-for i in range(1,kmax+1):
-    k.append(i)
-print("The maximum accuracy is %05f for k= %0.2f"%(max(acc) ,acc.index(max(acc))+1))
-plt.plot(k,acc)
-plt.title("Accuracy with different valuees of k")
-plt.show()
-print("The maximum AUC is %05f for k= %0.2f"%(max(ROC_AUC) ,ROC_AUC.index(max(ROC_AUC))+1))
-plt.plot(k,ROC_AUC)
-plt.title("AUC with different valuees of k")
+# # plt.show()
+# k=[]
+# for i in range(1,kmax+1):
+#     k.append(i)
+# print("The maximum accuracy is %05f for k= %0.2f"%(max(acc) ,acc.index(max(acc))+1))
+# plt.plot(k,acc)
+# plt.title("Accuracy with different valuees of k")
+# plt.show()
+# # print("The maximum AUC is %05f for k= %0.2f"%(max(ROC_AUC) ,ROC_AUC.index(max(ROC_AUC))+1))
+# # plt.plot(k,ROC_AUC)
+# # plt.title("AUC with different valuees of k")
+# # plt.show()
+param = {"n_neighbors": list(range(1,100))}
+grid =GridSearchCV(KNeighborsClassifier(),param_grid=param,scoring="accuracy",n_jobs=-1)
+grid.fit(X,y)
+print(grid.best_params_)
+print(grid.best_score_)
+print(grid.cv_results_)
+
+accuracy =grid.cv_results_['mean_test_score']
+k=grid.cv_results_['param_n_neighbors']
+plt.plot(k,accuracy)
+plt.title("Mean of the Accuracy with different valuees of k")
 plt.show()
