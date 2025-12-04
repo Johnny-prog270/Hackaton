@@ -26,13 +26,13 @@ from plotly.offline import init_notebook_mode, iplot
 # miny=133
 
 
-# DATA_PATH = "datasets/cats_and_dogs"
-# LABEL_TO_IDX = {"cats": 0, "dogs": 1}
+DATA_PATH = "datasets/cats_and_dogs"
+LABEL_TO_IDX = {"cats": 0, "dogs": 1}
 
-# dataimagecats = io.imread_collection("datasets/cats_and_dogs/cats/*.jpg")
-# dataimagedogs = io.imread_collection("datasets/cats_and_dogs/dogs/*.jpg")
+dataimagecats = io.imread_collection("datasets/cats_and_dogs/cats/*.jpg")
+dataimagedogs = io.imread_collection("datasets/cats_and_dogs/dogs/*.jpg")
 
-# dataimages = list(dataimagecats) + list(dataimagedogs)
+dataimages = list(dataimagecats) + list(dataimagedogs)
 
 # minx = 2000
 # miny = 2000
@@ -44,8 +44,8 @@ from plotly.offline import init_notebook_mode, iplot
 # print(minx,miny)
 
 
-# minx=133
-# miny=133
+# minx=32
+# miny=32
 
 # def rgb(i):
 #     if i%3==0:
@@ -82,7 +82,7 @@ X = df[pixel_cols].values
 y = df["cat/dog"].values
 
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.3, random_state=42, stratify=y
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
 kmax=20
@@ -137,25 +137,14 @@ for i in range(1, kmax+1):
     ROC_AUC.append(roc_auc)
 
     # 4 Plot
-    # plt.figure(figsize=(6,6))
-    # plt.plot(fpr, tpr, color="darkorange", lw=2, label="ROC curve (AUC = %0.2f)" % roc_auc)
-    # plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
-    # plt.xlabel("False Positive Rate")
-    # plt.ylabel("True Positive Rate")
-    # plt.title("ROC Curve - k-NN Classifier")
-    # plt.legend(loc="lower right")
+    
     plt.subplot(int(kmax/4),4,i)
     plt.plot(fpr, tpr, color="darkorange", lw=2, label="ROC curve (AUC = %0.2f)" % roc_auc)
     plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
     plt.title("ROC Curve - k-NN Classifier k= %0.2f "% i )
     plt.xlabel("False Positive Rate")
     plt.ylabel("True Positive Rate")
-    # plt.legend(oc="lower right")
-
-    # # 5 Sauvegarder le plot en fichier image
-    # plt.savefig("roc_curve.png", dpi=300, bbox_inches="tight")
-    # plt.close()  # fermer la figure pour libérer la mémoire
-
+    
 
 plt.show()
 
@@ -171,11 +160,11 @@ plt.show()
 k=[]
 for i in range(1,kmax+1):
     k.append(i)
-print("The maximum accuracy is %05f for k= %0.2f"%(max(acc) ,acc.index(max(acc))))
+print("The maximum accuracy is %05f for k= %0.2f"%(max(acc) ,acc.index(max(acc))+1))
 plt.plot(k,acc)
 plt.title("Accuracy with different valuees of k")
 plt.show()
-print("The maximum AUC is %05f for k= %0.2f"%(max(ROC_AUC) ,ROC_AUC.index(max(ROC_AUC))))
+print("The maximum AUC is %05f for k= %0.2f"%(max(ROC_AUC) ,ROC_AUC.index(max(ROC_AUC))+1))
 plt.plot(k,ROC_AUC)
 plt.title("AUC with different valuees of k")
 plt.show()
