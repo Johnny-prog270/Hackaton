@@ -20,6 +20,7 @@ import plotly.express as px
 from plotly.offline import init_notebook_mode, iplot
 
 
+#code pour trouver la plus petite résolution d'image dans le dataset
 """
 dataimages = list(dataimagecats) + list(dataimagedogs)
 
@@ -32,9 +33,11 @@ for img in dataimages:
         miny=img.shape[1]
 print(minx,miny)
 """
+
 minx=133
 miny=133
 
+#code pour générer le fichier csv à partir des images
 """
 DATA_PATH = "datasets/cats_and_dogs"
 LABEL_TO_IDX = {"cats": 0, "dogs": 1}
@@ -56,7 +59,6 @@ def rgb(i):
 pixels = ["pixel"+str((i//3)+1)+rgb(i) for i in range(0,minx*miny*3)]
 pixels.insert(0,"cat/dog")
 
-
 img_resizedcats=[]
 for img in dataimagecats:
     img_resizedcats.append(np.insert(np.ravel(transform.resize(img,(minx,miny))), 0, 0))
@@ -72,7 +74,6 @@ df.to_csv("data_part2.csv", index=False)
 
 
 df = pd.read_csv("data_part2.csv")
-
 df = df.dropna()
 
 pixel_cols = [col for col in df.columns if col != "cat/dog"]
